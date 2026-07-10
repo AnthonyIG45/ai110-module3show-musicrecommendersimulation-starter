@@ -27,6 +27,16 @@ Some prompts to answer:
 - How does your `Recommender` compute a score for each song
 - How do you choose which songs to recommend
 
+* Mood, energy, and tempo_bpm seem to have a very strong coorelation to each other with higher BMP tending to be a more upbeat, happy, or intense song.
+* I plan to have my system combine a few of the given data points into clusters to help fine tune the weighted score they receive.
+* Genre, mood, energy, tempo, artist, and title
+
+* The information that the user profile needs to store is likely their favorite genre, favorite mood, target energy, and if they like acoustics or not.
+
+* It will compute the score using a weight based system. Grouping tempo and energy together for a flat 1 or 0, mood is a binary value as well as genre. We can then have an energy proximity fit versus acoustics.
+
+* We will just rank the song by total score and then take the top one that hasnt been played already.
+
 You can include a simple diagram or bullet list if helpful.
 
 ---
