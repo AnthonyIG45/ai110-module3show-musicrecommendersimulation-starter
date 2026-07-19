@@ -85,6 +85,42 @@ Prompts:
 
 No need for numeric metrics unless you created some.
 
+### Intuition check: "Deep Intense Rock"
+
+Profile: `{"genre": "rock", "mood": "intense", "energy": 0.9, "likes_acoustic": False}`
+
+Top result: **Storm Runner** by Voltline, Score 4.89
+(`genre match +2.0`, `mood match +1.0`, `energy closeness +0.99`, `acoustic fit +0.90`)
+
+This is the only rock/intense track whose energy (0.91) sits almost exactly on the 0.9 target, so it edges out
+Iron Vein (energy 0.94, score 4.88) and Highway Static (energy 0.88, score 4.86) — the top three are separated by
+only 0.03 points, all three of them Voltline tracks.
+
+**Does it feel right?** Mostly, but not completely. My own intuition when I ask for "deep intense rock" is that I
+want the *heaviest* track — the one with the highest energy and fastest tempo (Iron Vein: energy 0.94, 158 BPM) —
+not necessarily the one closest to an arbitrary 0.9 energy number. The scoring rewards **proximity to a target**,
+not **maximum intensity**, so a listener who typed `0.9` as a rough "pretty high" estimate rather than an exact
+number would probably expect Iron Vein on top instead of Storm Runner. That's a real gap between how the algorithm
+optimizes (minimize distance to a number) and how a person actually thinks about "intense" (a direction, not a
+point).
+
+I asked my AI coding assistant to explain the ranking directly from the current weights in `recommender.py`, and
+its explanation matched the math above exactly: genre and mood are flat +2.0/+1.0 bonuses that only apply on an
+exact string match, while `_energy_component` and `_acoustic_component` are continuous terms computed as
+`1 - abs(value - target)`, so among songs that already share genre and mood, ranking is decided entirely by
+whichever one happens to sit closest to the numeric targets.
+
+### Repeated top result across profiles
+
+**Sunrise City** (pop, happy, energy 0.82) ranked #1 for both the "High-Energy Pop" profile (4.74) and the
+"Unknown Genre" adversarial profile (2.70), where genre stopped contributing entirely. That's the warning sign
+the assignment calls out: when a song keeps winning across different profiles, it's usually not because the
+genre weight is too strong (genre only helped in one of those two cases) — it's because the **catalog is only
+30 songs**, and "happy" mood has just 5 entries in it (Sunrise City, Rooftop Lights, Golden Hour, Morning
+Playlist, Bloom Parade). With so few happy-mood songs, any profile favoring mood over a specific genre collapses
+onto nearly the same short list, and the single highest-energy one among them keeps winning. A larger, more
+varied catalog per mood/genre combination would surface more distinct top-5 lists per profile.
+
 ---
 
 ## 8. Future Work  
