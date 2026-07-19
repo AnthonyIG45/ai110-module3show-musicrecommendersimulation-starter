@@ -36,21 +36,25 @@ class UserProfile:
     likes_acoustic: bool
 
 def _genre_component(genre: str, favorite_genre: str) -> Tuple[float, Optional[str]]:
+    """Awards a flat GENRE_WEIGHT bonus when the song's genre matches the target."""
     if genre == favorite_genre:
         return GENRE_WEIGHT, f"genre match (+{GENRE_WEIGHT:.1f})"
     return 0.0, None
 
 def _mood_component(mood: str, favorite_mood: str) -> Tuple[float, Optional[str]]:
+    """Awards a flat MOOD_WEIGHT bonus when the song's mood matches the target."""
     if mood == favorite_mood:
         return MOOD_WEIGHT, f"mood match (+{MOOD_WEIGHT:.1f})"
     return 0.0, None
 
 def _energy_component(energy: float, target_energy: float) -> Tuple[float, str]:
+    """Scores how close the song's energy is to the target energy, scaled by ENERGY_WEIGHT."""
     closeness = 1 - abs(energy - target_energy)
     points = ENERGY_WEIGHT * closeness
     return points, f"energy closeness (+{points:.2f})"
 
 def _acoustic_component(acousticness: float, likes_acoustic: bool) -> Tuple[float, str]:
+    """Scores how well the song's acousticness fits the user's acoustic preference, scaled by ACOUSTIC_WEIGHT."""
     fit = acousticness if likes_acoustic else (1 - acousticness)
     points = ACOUSTIC_WEIGHT * fit
     return points, f"acoustic fit (+{points:.2f})"
@@ -64,6 +68,7 @@ class Recommender:
         self.songs = songs
 
     def _score(self, user: UserProfile, song: Song) -> Tuple[float, List[str]]:
+        """Computes a song's total score and reasons against a user's taste profile."""
         reasons: List[str] = []
         total = 0.0
 
@@ -88,11 +93,13 @@ class Recommender:
         return total, reasons
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+        """Returns the top k songs for a user, ranked by score from highest to lowest."""
         scored = [(self._score(user, song)[0], song) for song in self.songs]
         scored.sort(key=lambda pair: pair[0], reverse=True)
         return [song for _, song in scored[:k]]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
+        """Returns a human-readable string explaining why a song scored the way it did."""
         total, reasons = self._score(user, song)
         return f"Score {total:.2f} - " + "; ".join(reasons)
 
