@@ -252,3 +252,7 @@ That changed how I think about real recommendation apps. If a tiny 4-rule system
 have a filter bubble and can already prefer "loud and general-genre-correct" over "actually matches how you
 feel," a real app with millions of songs and hidden rules almost certainly has similar blind spots, just much
 harder to spot.
+
+AI was very helpful in recommending the addition and point based logic for this system. Originally, I was just going to have things be a flat point amount like +1 or +3, but the AI model suggested using a point system based off the range. For example, if the user likes more upbeat songs with 0.7 accoustic, a song with an accoustic rating of 0.1 will only gain a fraction of the points in accoustics (around 0.2) where a song with an accoustic rating of 0.6 would gain more because it is in a closer rating proximity.
+
+All together it made me realize that if we want a true recommendation that is tailored to actually giving the listener songs similar to what they like without just giving pretty much the exact same song in the same genre, then it would be beneficial to have more data for each song so that we can get more precise points, and some machine learning involved to analyze the listening pattern of the user like skipped songs vs. songs they fully listen through etc.
