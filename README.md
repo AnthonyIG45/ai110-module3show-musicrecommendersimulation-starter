@@ -39,6 +39,8 @@ Some prompts to answer:
 
 You can include a simple diagram or bullet list if helpful.
 
+* Final algorithm will have a flat amount of points added if genre and mood are the same and then everything else can have a variance of points based off how close their values are to the value range of the users prefered genre.
+
 ---
 
 ## Getting Started
@@ -81,12 +83,31 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+Loaded songs: 30
+User profile: genre=pop, mood=happy, energy=0.8
+
+Top recommendations:
+
+1. Sunrise City by Neon Echo - Score: 3.98
+     - genre match (+2.0)
+     - mood match (+1.0)
+     - energy closeness (+0.98)
+
+2. Gym Hero by Max Pulse - Score: 2.87
+     - genre match (+2.0)
+     - energy closeness (+0.87)
+
+3. Treadmill Anthem by Max Pulse - Score: 2.85
+     - genre match (+2.0)
+     - energy closeness (+0.85)
+
+4. Sprint Interval by Max Pulse - Score: 2.84
+     - genre match (+2.0)
+     - energy closeness (+0.84)
+
+5. Rooftop Lights by Indigo Parade - Score: 1.96
+     - mood match (+1.0)
+     - energy closeness (+0.96)
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
